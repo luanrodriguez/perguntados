@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ButtonsContainer, HomeContainer } from "./styles";
-import { Button } from "@mui/material";
 import {
   DefaultButton,
   TitleTypography,
