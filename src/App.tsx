@@ -13,7 +13,7 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [roomId, setRoomId] = useState<string>("");
   const firebaseConfig: FirebaseOptions = {
-    databaseURL: "https://question-ef632-default-rtdb.firebaseio.com/",
+    databaseURL: process.env.VITE_FIREBASE_URL,
   };
 
   const handleAccessRoom = (nickname: string, passedRoomId: string) => {
