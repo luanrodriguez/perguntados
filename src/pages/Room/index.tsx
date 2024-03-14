@@ -12,6 +12,7 @@ import { NormalTypography } from "../../styles/styles";
 import { Fort } from "@mui/icons-material";
 import { UserScreen } from "./UserScreen";
 import { AdminScreen } from "./AdminScreen";
+import { Virtuoso } from "react-virtuoso";
 
 interface RoomProps {
   database: Database;
@@ -38,16 +39,20 @@ export const Room = ({ database, user, roomId }: RoomProps) => {
       )}
       <UsersAndQuestionContainer>
         <UsersContainer>
-          {users.map((user) => (
-            <UserNicknameContainer key={user.id}>
-              <NormalTypography>{user.nickname}</NormalTypography>
-              {user.admin ? (
-                <Fort color="info" />
-              ) : (
-                <NormalTypography>{user.points}</NormalTypography>
-              )}
-            </UserNicknameContainer>
-          ))}
+          <Virtuoso
+            style={{ height: "100%", width: "250px" }}
+            totalCount={users.length}
+            itemContent={(index) => (
+              <UserNicknameContainer key={users[index].id}>
+                <NormalTypography>{users[index].nickname}</NormalTypography>
+                {users[index].admin ? (
+                  <Fort color="info" />
+                ) : (
+                  <NormalTypography>{users[index].points}</NormalTypography>
+                )}
+              </UserNicknameContainer>
+            )}
+          />
         </UsersContainer>
         <QuestionContainer>
           {!user.admin && (

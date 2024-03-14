@@ -22,6 +22,7 @@ export const UsersContainer = styled(Box)({
   flexDirection: "column",
   borderRight: `5px solid ${COLORS.greenBorder}`,
   padding: "10px",
+  height: "100%",
 });
 
 export const QuestionContainer = styled(Box)({
@@ -37,4 +38,6 @@ export const UserNicknameContainer = styled(Box)({
   alignItems: "center",
   maxWidth: "250px",
   wordBreak: "break-word",
+  borderBottom: `4px solid ${COLORS.greenBorder}`,
+  marginTop: "5px",
 });
