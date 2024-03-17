@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Database, get, onValue, ref, remove, set } from "firebase/database";
 import { User } from "../../../interfaces/User";
 import { shuffleArray } from "../../../helpers/array";
+import { UserAnswer } from "../../../interfaces/UserAnswer";
 
 interface UserScreenProps {
   database: Database;
@@ -25,6 +26,7 @@ export const UserScreen = ({ database, roomId, user }: UserScreenProps) => {
   const [answer4, setAnswer4] = useState<string>("");
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [sentAnswer, setSentAnswer] = useState<boolean>(false);
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
 
   const handleSendAnswer = () => {
     const userAnswerRef = ref(
@@ -64,10 +66,18 @@ export const UserScreen = ({ database, roomId, user }: UserScreenProps) => {
       database,
       `answers/rooms/${roomId}/users/${user.id}`
     );
+    const usersAnswersRef = ref(database, `answers/rooms/${roomId}/users`);
 
     onValue(correctAnswerRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) return;
+
+      get(usersAnswersRef).then((userAnswersSnapshot) => {
+        if (userAnswersSnapshot.exists()) {
+          const userAnswerData = userAnswersSnapshot.val();
+          setUserAnswers(Object.values(userAnswerData));
+        }
+      });
 
       get(userAnswerRef).then((answerSnapshot) => {
         if (answerSnapshot.exists()) {
@@ -91,6 +101,12 @@ export const UserScreen = ({ database, roomId, user }: UserScreenProps) => {
 
   return (
     <>
+      {!question &&
+        userAnswers.map((userAnswer, index) => (
+          <NormalTypography key={`${userAnswer.userNickname}-${index}`}>
+            {userAnswer.userNickname} escolheu "{userAnswer.selectedAnswer}"
+          </NormalTypography>
+        ))}
       {question && (
         <>
           <NormalTypography>
